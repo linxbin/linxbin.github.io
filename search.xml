@@ -4,26 +4,25 @@
   
     
     <entry>
-      <title>我的第一篇博客</title>
-      <link href="/2019/05/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"/>
-      <url>/2019/05/29/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+      <title>HTTP协议状态码，常见状态码以及描述</title>
+      <link href="/2019/08/22/http-code/"/>
+      <url>/2019/08/22/http-code/</url>
       
-        <content type="html"><![CDATA[<blockquote><p>mac系统中使用brew作为包管理工具，类似centos中的yum，ubuntu中的apt-get，在使用brew update的使用，有时候会长时间无反应，或者中途断开连接，这是因为brew默认的镜像在国外，被墙或者被限速导致的，只要修改brew的镜像为国内镜像就可以了。</p></blockquote><h3 id="使用中科大的镜像"><a href="#使用中科大的镜像" class="headerlink" title="使用中科大的镜像"></a>使用中科大的镜像</h3><h4 id="替换默认源"><a href="#替换默认源" class="headerlink" title="替换默认源"></a>替换默认源</h4><ul><li>第一步，替换brew.git</li></ul><p><code>cd &quot;$(brew --repo)&quot;</code></p><p><code>git remote set-url origin https://mirrors.ustc.edu.cn/brew.git</code></p><ul><li>第二步：替换homebrew-core.git</li></ul><p><code>cd &quot;$(brew --repo)/Library/Taps/homebrew/homebrew-core&quot;</code></p><p><code>git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</code></p><ul><li>使用brew update进行更新，发现速度变的很快。替换镜像完成。</li></ul>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="/2019/05/29/hello-world/"/>
-      <url>/2019/05/29/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+        <content type="html"><![CDATA[<p>简单汇总http状态码大类，并介绍几种常见状态码以及状态码所表示的含义。</p><a id="more"></a><h5 id="状态码大类"><a href="#状态码大类" class="headerlink" title="状态码大类"></a>状态码大类</h5><ul><li>1xx：指示信息表示请求已接收，继续处理。</li><li>2xx：成功表示请求已被成功接收、理解、接受。</li><li>3xx：重定向要完成请求必须进行更进一步的操作。</li><li>4xx：客户端错误请求有语法错误或请求无法实现。</li><li>5xx：服务器端错误服务器未能实现合法的请求。</li></ul><h5 id="常见状态码以及描述"><a href="#常见状态码以及描述" class="headerlink" title="常见状态码以及描述"></a>常见状态码以及描述</h5><ul><li>200 OK：客户端请求成功。</li><li>400 Bad Request：客户端请求有语法错误，不能被服务器所理解。</li><li>401 Unauthorized：请求未经授权，这个状态代码必须和 Authenticate 报头域一起使用。</li><li>403 Forbidden：服务器收到请求，但是拒绝提供服务。</li><li>404 Not Found：请求资源不存在，举个例子：输入了错误的 URL。 </li><li>500 Internal - Server Error：服务器发生不可预期的错误。</li><li>503 Server Unavailable：服务器当前不能处理客户端的请求，一段时间后可能恢复正常，举个例子：HTTP/1.1  200 OK（CRLF）。</li></ul>]]></content>
       
       
+      <categories>
+          
+          <category> 网络知识 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> http </tag>
+            
+        </tags>
       
     </entry>
     
