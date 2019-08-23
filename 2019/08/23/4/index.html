@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>所有标签 | 守城的小兵</title>
+  <title>Centos7 配置 mysql5.7主从复制 | 守城的小兵</title>
   
   
 
@@ -191,76 +191,314 @@
 
   <div class="l_body nocover">
     <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
       
-<div class='l_main'>
-  
+
+
+  <section class='meta'>
     
-      <section class="post-list">
-        <div class='post-wrapper'>
-          <article id="archive-page" class="post article white-box">
-            <section class="archive">
-              <div class="archive-item archive-year mark">
-                <h2>所有标签</h2>
-                <hr>
-              </div>
-              <div class="archive-item archive-post mark">
-                
-                  
-                    
-                      <a class="" href="/tags/centos/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;centos</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/http/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;http</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/linux/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;linux</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/mysql/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;mysql</time>
-                        <span class="title">
-                          (5)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/php/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;php</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                
-              </div>
-              <br>
-              
-            </section>
-          </article>
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/08/23/4/">
+        Centos7 配置 mysql5.7主从复制
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="http://yoursite.com" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Lin XiaoBin</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-08-23</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Mysql/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>Mysql</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <h2 id="第一步，环境准备"><a href="#第一步，环境准备" class="headerlink" title="第一步，环境准备"></a>第一步，环境准备</h2><ul>
+<li>主数据库：Centos 7.0 + Mysql 5.7.24</li>
+<li>从数据库：Centos 7.0 + Myswl 5.7.24</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="主数据库配置"><a href="#主数据库配置" class="headerlink" title="主数据库配置"></a>主数据库配置</h2><ul>
+<li><p>使用vim编辑器打开my.cnf配置文件，<code>vi /etc/my.cnf</code></p>
+</li>
+<li><p>在[mysqld]中加入如下参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server-id=1  //设置服务器唯一标识</span><br><span class="line">log-bin=master-bin // 开启mysql二进制文件日志，用于从数据库同步数据的凭证</span><br><span class="line">log_bin_index=master-bin.index</span><br><span class="line">binlog_do_db=weicp // 指定同步的数据库</span><br><span class="line">binlog_ignore_db=mysql // 不记录二进制日志的数据库</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存配置，重启mysql服务</p>
+</li>
+<li><p>查看是否生效<br>使用 mysql -u root -p 进入mysql终端<br>使用<code>show master status</code>查看配置是否生效，如果生效，会得到<code>File</code>跟<code>Position</code> 两个参数值。</p>
+</li>
+<li><p>主库创建同步账号</p>
+</li>
+</ul>
+<p>进入mysql终端</p>
+<p><code>mysql&gt;  grant replication slave on *.* to &#39;repl&#39;@&#39;192.168.18.%&#39; identified by &#39;repl&#39;;</code></p>
+<h2 id="从数据库配置"><a href="#从数据库配置" class="headerlink" title="从数据库配置"></a>从数据库配置</h2><ul>
+<li><p>使用vim打开从数据库的配置文件，vi /etc/my.cnf</p>
+</li>
+<li><p>在[mysqld]中加入如下参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server-id = 2 //从服务器唯一标识符</span><br><span class="line">relay-log = slave-relay-bin  //从服务器二进制日志</span><br><span class="line">relay-log-index = slave-relay-bin.index</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启mysql</p>
+</li>
+<li><p>使用 mysql -u root -p 进去mysql终端</p>
+</li>
+<li><p>执行下面的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">change master to master_host=&apos;192.168.33.10&apos;,master_port=3306,master_user=&apos;repl&apos;,master_password=&apos;repl&apos;, master_log_file=&apos;master-bin.000001&apos;,master_log_pos=10157;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>上面的命令是指定从数据使用repl用户，远程登录192.168.33.10的主数据库，同步主二进制日志文件master-bin.000001,，<code>master_log_pos</code>是主数据库的<code>Position</code>, master_log_file是主数据库的<code>File</code>值。</p>
+<ul>
+<li>命令生效之后启动slave，<code>start slave</code></li>
+</ul>
+<blockquote>
+<p>启动slave可能会报出<code>The slave I/O thread stops because master and slave have equal MySQL server UUIDs; these UUIDs must be different for replication to work.</code>这样的错误，那是因为主从数据库的uuid相同导致的。</p>
+</blockquote>
+<p>解决的方法就是找到数据库文件的存放路径（注:不是mysql安装目录）例如/data/mysql里面的auto.cnf，把其中一个数据库的uuid值改掉，在启动slave就可以了。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>保证主从数据库的 max_allowed_packet 参数配置一致，可以使用 <code>show variables like &#39;max_allowed_packet&#39;;</code> 进行查看</li>
+</ul>
+
         </div>
-      </section>
-    
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-23T09:32:56+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2019年8月23日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
   
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/mysql/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>mysql</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/08/23/4/&title=Centos7 配置 mysql5.7主从复制 | 守城的小兵&summary=第一步，环境准备
+主数据库：Centos 7.0 + Mysql 5.7.24
+从数据库：Centos 7.0 + Myswl 5.7.24
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/08/23/4/&title=Centos7 配置 mysql5.7主从复制 | 守城的小兵&summary=第一步，环境准备
+主数据库：Centos 7.0 + Mysql 5.7.24
+从数据库：Centos 7.0 + Myswl 5.7.24
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/08/23/4/&title=Centos7 配置 mysql5.7主从复制 | 守城的小兵&summary=第一步，环境准备
+主数据库：Centos 7.0 + Mysql 5.7.24
+从数据库：Centos 7.0 + Myswl 5.7.24
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2019/08/23/5/" rel="prev" title="Mysql解决日志的时间与系统时间不一致的问题">
+                                  
+                                      Mysql解决日志的时间与系统时间不一致的问题
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/mysql/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>mysql</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2019/08/23/3/" rel="prev" title="Mysql开启查询缓存">
+                                    
+                                        Mysql开启查询缓存
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/mysql/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>mysql</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Centos7 配置 mysql5.7主从复制',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   

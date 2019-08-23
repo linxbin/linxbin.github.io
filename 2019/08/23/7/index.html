@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>所有标签 | 守城的小兵</title>
+  <title>Centos7控制端口 | 守城的小兵</title>
   
   
 
@@ -191,76 +191,331 @@
 
   <div class="l_body nocover">
     <div class='body-wrapper'>
+      <div class='l_main'>
+  
+
+  
+    <article id="post" class="post white-box article-type-post" itemscope itemprop="blogPost">
       
-<div class='l_main'>
-  
+
+
+  <section class='meta'>
     
-      <section class="post-list">
-        <div class='post-wrapper'>
-          <article id="archive-page" class="post article white-box">
-            <section class="archive">
-              <div class="archive-item archive-year mark">
-                <h2>所有标签</h2>
-                <hr>
-              </div>
-              <div class="archive-item archive-post mark">
-                
-                  
-                    
-                      <a class="" href="/tags/centos/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;centos</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/http/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;http</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/linux/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;linux</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/mysql/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;mysql</time>
-                        <span class="title">
-                          (5)
-                        </span>
-                      </a>
-                    
-                  
-                    
-                      <a class="" href="/tags/php/">
-                        <time><i class='fas fa-hashtag fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;php</time>
-                        <span class="title">
-                          (1)
-                        </span>
-                      </a>
-                    
-                  
-                
-              </div>
-              <br>
-              
-            </section>
-          </article>
+    
+    <div class="meta" id="header-meta">
+      
+        
+  
+    <h1 class="title">
+      <a href="/2019/08/23/7/">
+        Centos7控制端口
+      </a>
+    </h1>
+  
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="http://yoursite.com" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>Lin XiaoBin</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-08-23</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/Linux/' rel="nofollow">
+      <i class="fas fa-folder-open" aria-hidden="true"></i>
+      <p>Linux</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  
+    <div class="new-meta-item browse busuanzi">
+      <a class='notlink'>
+        <i class="fas fa-eye" aria-hidden="true"></i>
+        <p>
+          <span id="busuanzi_value_page_pv">
+            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
+          </span>
+        </p>
+      </a>
+    </div>
+  
+
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          <h5 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h5><blockquote>
+<p>网上的大部分资料都是用iptables防火墙的，但是阿里云的centos 7默认防火墙是firewall。最为简单的方法其实就是关闭我们的防火墙：</p>
+</blockquote>
+<ul>
+<li>查看下防火墙的状态：systemctl status firewalld</li>
+<li>关闭防火墙：systemctl stop firewalld</li>
+</ul>
+<blockquote>
+<p>这样就解决了，在访问下ip地址:端口号就可以看到所写的应用啦！但是这样的问题是很不安全，其实可以将firewall服务禁用，应用iptables服务（网上大部分启用端口的资料都是基于iptables服务）。</p>
+</blockquote>
+<a id="more"></a>
+
+<h5 id="安装iptables"><a href="#安装iptables" class="headerlink" title="安装iptables"></a>安装iptables</h5><blockquote>
+<p>由于没有防火墙会造成不安全，所以给服务器安装一应用更广的防火墙iptable</p>
+</blockquote>
+<ul>
+<li><p>首先要禁用firewall，通过yum安装iptables：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld</span><br><span class="line">yum install -y iptables-services</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动iptables</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start iptables</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>启动后可以通过<code>systemctl status iptables</code>查看状态。</p>
+</li>
+<li><p>更改iptables规则</p>
+</li>
+<li><p>将iptables文件备份下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -a /etc/sysconfig/iptables /etc/sysconfig/iptables.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置 INPUT 方向所有的请求都拒绝</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -P INPUT DROP</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>放开所需端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -I INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT</span><br><span class="line">iptables -I INPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT </span><br><span class="line">iptables -I INPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables-save &gt; /etc/sysconfig/iptables</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置为开机启动并且重启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable iptables.service</span><br><span class="line">systemctl reboot</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
         </div>
-      </section>
-    
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <hr>
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2019-08-23T09:42:06+08:00">
+  <a class='notlink'>
+    <i class="fas fa-clock" aria-hidden="true"></i>
+    <p>最后更新于 2019年8月23日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
   
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/linux/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>linux</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/centos/" rel="nofollow"><i class="fas fa-hashtag" aria-hidden="true"></i>&nbsp;<p>centos</p></a></div>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="QQ好友" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2019/08/23/7/&title=Centos7控制端口 | 守城的小兵&summary=关闭防火墙
+网上的大部分资料都是用iptables防火墙的，但是阿里云的centos 7默认防火墙是firewall。最为简单的方法其实就是关闭我们的防火墙：
+
+
+查看下防火墙的状态：systemctl status firewalld
+关闭防火墙：systemctl stop firewalld
+
+
+这样就解决了，在访问下ip地址:端口号就可以看到所写的应用啦！但是这样的问题是很不安全，其实可以将firewall服务禁用，应用iptables服务（网上大部分启用端口的资料都是基于iptables服务）。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="QQ空间" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/08/23/7/&title=Centos7控制端口 | 守城的小兵&summary=关闭防火墙
+网上的大部分资料都是用iptables防火墙的，但是阿里云的centos 7默认防火墙是firewall。最为简单的方法其实就是关闭我们的防火墙：
+
+
+查看下防火墙的状态：systemctl status firewalld
+关闭防火墙：systemctl stop firewalld
+
+
+这样就解决了，在访问下ip地址:端口号就可以看到所写的应用啦！但是这样的问题是很不安全，其实可以将firewall服务禁用，应用iptables服务（网上大部分启用端口的资料都是基于iptables服务）。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="微博" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2019/08/23/7/&title=Centos7控制端口 | 守城的小兵&summary=关闭防火墙
+网上的大部分资料都是用iptables防火墙的，但是阿里云的centos 7默认防火墙是firewall。最为简单的方法其实就是关闭我们的防火墙：
+
+
+查看下防火墙的状态：systemctl status firewalld
+关闭防火墙：systemctl stop firewalld
+
+
+这样就解决了，在访问下ip地址:端口号就可以看到所写的应用啦！但是这样的问题是很不安全，其实可以将firewall服务禁用，应用iptables服务（网上大部分启用端口的资料都是基于iptables服务）。
+"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/assets@19.1.9/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+            <div class="prev-next">
+                
+                    <section class="prev">
+                        <span class="art-item-left">
+                            <h6><i class="fas fa-chevron-left" aria-hidden="true"></i>&nbsp;上一页</h6>
+                            <h4>
+                                <a href="/2019/08/23/8/" rel="prev" title="PHP面试基础问答题">
+                                  
+                                      PHP面试基础问答题
+                                  
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/php/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>php</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+                
+                    <section class="next">
+                        <span class="art-item-right" aria-hidden="true">
+                            <h6>下一页&nbsp;<i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                            <h4>
+                                <a href="/2019/08/23/6/" rel="prev" title="不停止MySQL服务，修复数据库主从复制不一致的错误">
+                                    
+                                        不停止MySQL服务，修复数据库主从复制不一致的错误
+                                    
+                                </a>
+                            </h4>
+                            
+                                
+                                <h6 class="tags">
+                                    <a class="tag" href="/tags/mysql/"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>mysql</a>
+                                </h6>
+                            
+                        </span>
+                    </section>
+                
+            </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: 'Centos7控制端口',
+      tools: true
+    }
+  </script>
+
+
 </div>
 <aside class='l_side'>
   
